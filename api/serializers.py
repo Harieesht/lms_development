@@ -4,6 +4,7 @@ from rest_framework_simplejwt.tokens import Token
 from .models import *
 from users.models import *
 from rest_framework import serializers
+from django.conf import settings
 
 class MyTokenObtainSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -18,6 +19,24 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer):
         
         return token
 
+# class SubjectSerializer(ModelSerializer):
+    
+#     def calc_student_subject_progress(self,instance):
+#         user=self.context.get('user')
+#         student=Student.objects.get(user=user)
+#         # subject_id=self.data.get('id')
+#         subject_id=instance.id
+        
+#         subject_progress=SubjectProgress.objects.get(student=student,subject__id=subject_id)
+#         return subject_progress.progress
+    
+#     progress=serializers.SerializerMethodField(method_name="calc_student_subject_progress")
+    
+#     class Meta:
+#         model = Subject
+#         fields=['id','img','title','description','progress']
+
+
 class SubjectSerializer(ModelSerializer):
     
     def calc_student_subject_progress(self,instance):
@@ -25,8 +44,10 @@ class SubjectSerializer(ModelSerializer):
         student=Student.objects.get(user=user)
         # subject_id=self.data.get('id')
         subject_id=instance.id
-        
-        subject_progress=SubjectProgress.objects.get(student=student,subject__id=subject_id)
+        try:
+            subject_progress=SubjectProgress.objects.get(student=student,subject__id=subject_id)
+        except SubjectProgress.DoesNotExist:
+            return 0
         return subject_progress.progress
     
     progress=serializers.SerializerMethodField(method_name="calc_student_subject_progress")
@@ -34,17 +55,36 @@ class SubjectSerializer(ModelSerializer):
     class Meta:
         model = Subject
         fields=['id','img','title','description','progress']
-        
-        
-class ChapterSerializer(ModelSerializer):
-    class Meta:
-        model=Chapter
-        fields='__all__'
 
+    def to_representation(self, instance):
+        
+        ret = super().to_representation(instance)
+
+        ret['img']=settings.BASE_URL+ret['img']
+
+        return ret
+        
+        
+        
 class ChapterItemSerializer(ModelSerializer):
     class Meta:
         model=ChapterItem
-        fields='__all__'
+        fields=['description']
+        
+        
+class ChapterSerializer(ModelSerializer):
+    
+    items = serializers.SerializerMethodField(method_name='get_items')
+    
+    class Meta:
+        model=Chapter
+        fields=['name','description','items']
+
+    def get_items(self,obj):
+        items=obj.items.all()
+        serializer=ChapterItemSerializer(items,many=True)
+        return serializer.data
+
         
                 
         

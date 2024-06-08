@@ -75,7 +75,7 @@ class Chapter(models.Model):
 
     def save(self, *args, **kwargs):
         """Override the save method to set the college based on the Subject."""
-        self.college = self.Subject.college
+        self.college = self.subject.college
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -85,7 +85,7 @@ class Chapter(models.Model):
 class ChapterItem(models.Model):
     
     description=models.TextField()
-    chapter=models.ForeignKey(Chapter,on_delete=models.PROTECT)
+    chapter=models.ForeignKey(Chapter,on_delete=models.PROTECT,related_name='items')
     ppt=models.FileField(upload_to='path-to-upload')
     video=models.FileField(upload_to='path-to-upload')
     
