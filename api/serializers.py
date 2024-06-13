@@ -67,9 +67,18 @@ class SubjectSerializer(ModelSerializer):
         
         
 class ChapterItemSerializer(ModelSerializer):
+    
     class Meta:
         model=ChapterItem
-        fields=['description']
+        fields=['description','video']
+        
+    def to_representation(self, instance):
+        
+        ret = super().to_representation(instance)
+
+        ret['video']=settings.BASE_URL+ret['video']
+
+        return ret
         
         
 class ChapterSerializer(ModelSerializer):

@@ -73,7 +73,7 @@ def get_subject_detail(request,subject_id):
     
     chapterserializer=api_serializers.ChapterSerializer(chapters,many=True)
     
-    return Response({'chapters':chapterserializer.data},status=status.HTTP_200_OK)
+    return Response(chapterserializer.data,status=status.HTTP_200_OK)
 
 def get_chapter_detail(request,chapter_id):
     

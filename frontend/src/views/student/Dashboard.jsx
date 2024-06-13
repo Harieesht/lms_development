@@ -20,10 +20,8 @@ function Dashboard() {
         const response = await useAxios().get("/user/subject");
         if (response.data && Array.isArray(response.data.subjects)) {
           setSubjects(response.data.subjects);
-          console.log(subjects)
         } else {
           setSubjects([]);
-          
           setError(new Error("Invalid data format"));
         }
       } catch (error) {

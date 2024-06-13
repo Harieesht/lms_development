@@ -87,7 +87,7 @@ class ChapterItem(models.Model):
     description=models.TextField()
     chapter=models.ForeignKey(Chapter,on_delete=models.PROTECT,related_name='items')
     ppt=models.FileField(upload_to='path-to-upload')
-    video=models.FileField(upload_to='path-to-upload')
+    video=models.FileField(upload_to='path-to-upload',default='https://www.youtube.com/watch?v=SqcY0GlETPk')
     
     def __str__(self):
         return f"{self.chapter}-item{self.id}"
@@ -138,6 +138,18 @@ class ChapterQuizAnswer(models.Model):
     def save(self,*args,**kwargs):
         self.student.progress=self.percentage
         super().save(*args,**kwargs)
+        
+        
+        
+class SubjectNotes(models.Model):
+    title=models.CharField(max_length=100)
+    description=models.TextField()
+    
+class SubjectReview(models.Model):
+    star=models.SmallIntegerField()
+    review=models.TextField()
+    
+
         
     
         
