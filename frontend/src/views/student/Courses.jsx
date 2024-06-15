@@ -1,24 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import Sidebar from './Partials/Sidebar'
-import Header from './Partials/Header'
-
 function Courses() {
     return (
-        <>
-            {/* <BaseHeader /> */}
-       <Header />
-            <section className="pt-5 pb-5">
-                <div className="container">
-                    {/* Header Here */}
-                    
+        <> 
+                <div className='container px-5'>
                     <div className="row mt-0 mt-md-4">
-                        {/* Sidebar Here */}
-                        <Sidebar />
-                        <div className="col-lg-9 col-md-8 col-12">
-                            <h4 className="mb-0 mb-4"> <i className='fas fa-shopping-cart'></i> My Courses</h4>
-
+                            <h4 className="mb-0 mb-4"> <i class="bi bi-file-earmark-fill pe-2"></i> My Subjects</h4>
                             <div className="card mb-4">
                                 <div className="card-header">
                                     <span>
@@ -93,11 +81,7 @@ function Courses() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* <BaseFooter /> */}
+                    </div> 
         </>
     )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
-import BaseHeader from '../partials/BaseHeader'
-import BaseFooter from '../partials/BaseFooter'
+import BaseHeader from '../base/partials/BaseHeader'
+import BaseFooter from '../base/partials/BaseFooter'
 
 
 function CreateNewPassword() {

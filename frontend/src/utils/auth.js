@@ -15,7 +15,6 @@ export const login = async (username,password) => {
 
         if (status===200) {
             setAuthUser(data.access,data.refresh);
-            alert("Login Successfull")
         }
 
         return {data,error:null};
@@ -53,7 +52,6 @@ export const logout = () => {
     useAuthStore.getState().setUser(null);  
 
     window.location.href = '/logout/';
-    alert("Logout Successfull");
 };
 
 export const setUser = async () => {

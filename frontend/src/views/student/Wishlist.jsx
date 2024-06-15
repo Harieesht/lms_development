@@ -1,28 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import BaseHeader from '../partials/BaseHeader'
-import BaseFooter from '../partials/BaseFooter'
-import Sidebar from './Partials/Sidebar'
-import Header from './Partials/Header'
-
 function Wishlist() {
     return (
         <>
-            {/* <BaseHeader /> */}
-            <Header />
-            <section className="pb-5">
                 <div className="container">
-                    {/* Header Here */}
-                    
                     <div className="row mt-0 mt-md-4">
-                        {/* Sidebar Here */}
-                        <Sidebar />
                         <div className="col-lg-9 col-md-8 col-12">
-                            <h4 className="mb-0 mb-4"> <i className='fas fa-heart'></i> Wishlist </h4>
-
-
-
+                            <h4 className="mb-0 mb-4"> <i className='fas fa-heart'></i> My Subjects </h4>
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
@@ -94,9 +79,6 @@ function Wishlist() {
                         </div>
                     </div>
                 </div>
-            </section>
-
-            {/* <BaseFooter /> */}
         </>
     )
 }

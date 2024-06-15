@@ -17,7 +17,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     
 def authenticate(request):  #Authenticating the token only if they are students
     
-    if request.method=='GET':
+    if request.method=='GET' or request.method=='POST':
         token=request.headers.get('Authorization',None)
         
         if token==None:
@@ -91,7 +91,7 @@ def get_chapter_detail(request,chapter_id):
     
     return Response({'chapteritems':chapteritemsserializer.data},status=status.HTTP_200_OK)    
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 def password_reset(request):
     decoded_token=authenticate(request)
     
@@ -114,8 +114,37 @@ def password_reset(request):
     if user_password is False:
         return Response({'message':"old password is not right....."},status=status.HTTP_401_UNAUTHORIZED)
     else:
-        user.set_password(new_password)
+        user.password=new_password
+        user.save()
         return Response({'message':'password has been changed'},status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def get_quiz_id(request,chapter_id):
+    
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    user_id=decoded_token.get('user_id')
+    
+    chapterquizes=ChapterQuiz.objects.filter(chapter__id=chapter_id)
+    
+    chapterquizid=[quiz.id for quiz in chapterquizes]
+    return Response({'chapterquizid':chapterquizid},status=status.HTTP_201_CREATED)
+
+    
+def get_quiz(request,quiz_id):
+    
+    chapterquiz=ChapterQuiz.objects.get(id=quiz_id)
+    chapterquizserializer=api_serializers.ChapterQuizSerializer()
+    
+    return Response({'quiz':chapterquizserializer.data},status=status.HTTP_200_OK)
+
+    
+    
     
 
             

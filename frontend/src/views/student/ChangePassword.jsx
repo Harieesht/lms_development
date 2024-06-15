@@ -1,93 +1,82 @@
-import React from 'react'
-import BaseHeader from '../partials/BaseHeader'
-import BaseFooter from '../partials/BaseFooter'
-import Sidebar from './Partials/Sidebar'
-import Header from './Partials/Header'
-
+import { useState } from "react"; 
+import useAxios from "../../utils/useAxios";
 
 function ChangePassword() {
-    return (
-        <>
-            {/* <BaseHeader /> */}
-         <Header />
-            <section className="pb-5">
-                <div className="container">
-                    {/* Header Here */}
-                    
-                    <div className="row mt-0 mt-md-4">
-                        {/* Sidebar Here */}
-                        <Sidebar />
-                        <div className="col-lg-9 col-md-8 col-12">
-                            {/* Card */}
-                            <div className="card">
-                                {/* Card header */}
-                                <div className="card-header">
-                                    <h3 className="mb-0">Change Password</h3>
-                                </div>
-                                {/* Card body */}
-                                <div className="card-body">
-                                    <div>
-                                        <form className="row gx-3 needs-validation" noValidate="">
-                                            {/* First name */}
-                                            <div className="mb-3 col-12 col-md-12">
-                                                <label className="form-label" htmlFor="fname">
-                                                    Old Password
-                                                </label>
-                                                <input
-                                                    type="password"
-                                                    id="password"
-                                                    className="form-control"
-                                                    placeholder="**************"
-                                                    required=""
-                                                />
-                                            </div>
-                                            {/* Last name */}
-                                            <div className="mb-3 col-12 col-md-12">
-                                                <label className="form-label" htmlFor="lname">
-                                                    New Password
-                                                </label>
-                                                <input
-                                                    type="password"
-                                                    id="password"
-                                                    className="form-control"
-                                                    placeholder="**************"
-                                                    required=""
-                                                />
-                                            </div>
+  const [currentPassword,setCurrentPassword]=useState("")  
+  const [newPassword,setNewPassword]=useState("")  
+  const [confirmPassword,setConfirmPassword]=useState("")   
+  const [error, setError] = useState("");  
+  const [success, setSuccess] = useState("");
+   
+  const handleResetPassword= async(e)=>{ 
+     e.preventDefault()
+    
+     if (newPassword !== confirmPassword) {
+      setError("New password and confirm password do not match.");
+      setSuccess("");
+      return;
+    } 
 
-                                            {/* Country */}
-                                            <div className="mb-3 col-12 col-md-12">
-                                                <label className="form-label" htmlFor="editCountry">
-                                                    Confirm New Password
-                                                </label>
-                                                <input
-                                                    type="password"
-                                                    id="password"
-                                                    className="form-control"
-                                                    placeholder="**************"
-                                                    required=""
-                                                />
-                                                <div className="invalid-feedback">Please choose country.</div>
-                                            </div>
-                                            <div className="col-12">
-                                                {/* Button */}
-                                                <button className="btn btn-primary" type="submit">
-                                                    Save New Password <i className='fas fa-check-circle'></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    const formData = new FormData();
+    formData.append("currentPassword", currentPassword);
+    formData.append("newPassword", newPassword);
+    formData.append("confirmPassword", confirmPassword);
+ 
+    try {
+      const response = await useAxios().post("/user/password-reset", formData);  
+ 
+      console.log(response.status === 201)
+      if (response.status === 201) { 
+        setSuccess("Password has been successfully changed.");
+        setError("");
+      } else {
+        setError(response.message || "An error occurred.");
+        setSuccess("");
+      }
+    } catch (error) {
+      setError("An error occurred: " + error.message);
+      setSuccess("");
+    }
+  };
+     
+  
+  
 
-                    </div>
+  return (
+    <>
+      <div className="container-fluid d-flex align-items-center justify-content-center my-5">
+        <div className="card hover-overlay shadow-lg p-4 rounded-4 w-lg-100">
+          <div className="p-3"> 
+             <h1 className="card-title fs-5 fw-bold">Create new password</h1>
+             <span className="fs-7 text-muted">Your new password must be different from previous used passwords.</span>
+          </div>
+          <div className="card-body"> 
+             {error && <div className="alert alert-danger">{error}</div>}
+             {success && <div className="alert alert-success">{success}</div>}
+              <form className="d-block gx-3 needs-validation" noValidate="">
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="currentPassword">Current Password</label>
+                  <input type="password" id="currentPassword" className="form-control" placeholder="********" required="" onChange={(e)=>setCurrentPassword(e.target.value)}/>
                 </div>
-            </section>
-
-            {/* <BaseFooter /> */}
-        </>
-    )
+                <div className="mb-3">
+                  <label className="form-label" htmlFor=" NewPassword" > New Password</label>
+                  <input type="password" id="NewPassword" className="form-control" placeholder="********" required="" onChange={(e)=>setNewPassword(e.target.value)}/>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="confirmPassword"> Confirm New Password</label>
+                  <input type="password" id="confirmPassword" className="form-control" placeholder="********" required="" onChange={(e)=>setConfirmPassword(e.target.value)}/>
+                </div> 
+                <div className="mt-4">
+                  <button className="btn btn-primary btn-sm px-3" type="submit" onClick={handleResetPassword}>
+                    Save <i class="bi bi-check-circle-fill"></i>
+                  </button> 
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </>
+  );
 }
 
-export default ChangePassword
+export default ChangePassword;

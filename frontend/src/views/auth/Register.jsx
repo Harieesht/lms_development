@@ -2,8 +2,8 @@ import { useState,useEffect } from 'react'
 import {register} from '../../utils/auth' 
 import apiInstance from '../../utils/axios'
 import React from 'react'
-import BaseHeader from '../partials/BaseHeader'
-import BaseFooter from '../partials/BaseFooter'
+import BaseHeader from '../base/partials/BaseHeader'
+import BaseFooter from '../base/partials/BaseFooter'
 import { Link, useNavigate } from 'react-router-dom'
 
 

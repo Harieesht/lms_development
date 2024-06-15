@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
-import BaseHeader from '../partials/BaseHeader'
-import BaseFooter from '../partials/BaseFooter'
+import BaseHeader from './partials/BaseHeader'
+import BaseFooter from './partials/BaseFooter'
 
 
 function Checkout() {

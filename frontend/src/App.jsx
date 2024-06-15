@@ -7,9 +7,17 @@ import Logout from '../src/views/auth/Logout'
 import ForgotPassword from '../src/views/auth/ForgotPassword'   
 import CreateNewPassword from '../src/views/auth/CreateNewPassword'  
  
-import index from '../src/views/base/Index' 
+//base Pages
  
-//Student Pages
+import Index from "./views/base/Index";
+import CourseDetail from "./views/base/CourseDetail";
+import Cart from "./views/base/Cart";
+import Checkout from "./views/base/Checkout";
+import Success from "./views/base/Success";
+import Search from "./views/base/Search";
+ 
+//Student Pages 
+import StudentLayout from './views/student/StudentLayout';
 import StudentDashboard from './views/student/Dashboard' 
 import StudentChangePassword from './views/student/ChangePassword' 
 import StudentCourseDetail from './views/student/CourseDetail' 
@@ -17,11 +25,9 @@ import StudentCourse from './views/student/Courses'
 import StudentProfile from './views/student/Profile' 
 import StudentQA from './views/student/QA' 
 import StudentQADetail from './views/student/QADetail' 
-import StudentStudentCourseLectureDetail from './views/student/StudentCourseLectureDetail' 
+import StudentCourseLectureDetail from './views/student/StudentCourseLectureDetail' 
 import StudentWishlist from './views/student/Wishlist' 
- 
-//Instrutor Pages  
-import InstructorDashboard from './views/instructor/Dashboard';
+import Quizpage from './views/student/QuizPage'
  
 
 import 'bootstrap/dist/css/bootstrap.min.css';    
@@ -37,24 +43,29 @@ function App() {
           <Route path="/forgot-password/"  element={<ForgotPassword />}  /> 
           <Route path="/create-new-password/"  element={<CreateNewPassword />}  />
 
-
-          <Route path='/' element={<index/>} />
+          {/* Base Routes */} 
+          <Route path="/" element={<Index />} />
+          <Route path="/course-detail/:slug/" element={<CourseDetail />} />
+          <Route path="/cart/" element={<Cart />} />
+          <Route path="/checkout/:order_oid/" element={<Checkout />} />
+          <Route path="/payment-success/:order_oid/" element={<Success />}/>
+          <Route path="/search/" element={<Search />} />
             
-         <Route>
-          {/* Student Routes */}
-          <Route path="/student/Dashboard/"  element={<StudentDashboard />} /> 
-          <Route path="/student/change-password/" element={<StudentChangePassword/>}></Route>
-          <Route path="/student/course-detail/:id" element={<StudentCourseDetail/>}></Route>
-          <Route path="/student/courses/" element={<StudentCourse/>}></Route>
-          <Route path="/student/Profile/" element={<StudentProfile/>}></Route>
-          <Route path="/student/question-answer/" element={<StudentQA/>}></Route>
-          <Route path="/student/QADetail/" element={<StudentQADetail/>}></Route> 
-          <Route path="/student/student-course-lectur-detail/" element={<StudentStudentCourseLectureDetail/>}></Route> 
-          <Route path="/student/wishlist/" element={<StudentWishlist/>}></Route> 
-           
-           {/* Instructor Routes */} 
-          <Route path="/instructor/dashboard/"  element={<InstructorDashboard />} />   
-         </Route> 
+      
+          {/* Student Routes */} 
+          <Route path='/student' element={<StudentLayout />}>
+            <Route index element={<StudentDashboard />} />   
+            <Route path="dashboard" element={<StudentDashboard />} />
+            <Route path="courses/" element={<StudentCourse/>} />
+            <Route path="course-detail/:id/:progress" element={<StudentCourseDetail/>} />
+            <Route path="Profile/" element={<StudentProfile/>} />
+            <Route path="wishlist/" element={<StudentWishlist/>} />   
+            <Route path="change-password/" element={<StudentChangePassword/>} />   
+            <Route path='question-answer/' element={<StudentQA/>} /> 
+            <Route path='qa-deatails/' element={<StudentQADetail/>} /> 
+            <Route path='lecture-details/' element={<StudentCourseLectureDetail/>} />
+            <Route path='quiz-page/' element={<Quizpage />} />
+          </Route>
         </Routes> 
       </MainWrapper> 
     </BrowserRouter>

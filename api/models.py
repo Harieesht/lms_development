@@ -61,7 +61,7 @@ class Subject(models.Model):
 
     def __str__(self):
         """String representation of the Subject."""
-        return self.title
+        return f"{self.title}-{self.id}"
 
 
 class Chapter(models.Model):
@@ -122,32 +122,59 @@ class ChapterQuiz(models.Model):
     choice_d=models.CharField(max_length=200)
     correct_answer=models.CharField(max_length=1,choices=answer)
     
-class ChapterQuizAnswer(models.Model):
+# class ChapterQuizAnswer(models.Model):
     
-    def get_original_answers(self):
-        chapterquizes=ChapterQuiz.objects.filter(chapter=self.chapter)
-        original_answer=[answer for answer in chapterquizes.answer]
-        return original_answer
+#     def get_original_answers(self):
+#         chapterquizes=ChapterQuiz.objects.filter(chapter=self.chapter)
+#         original_answer=[answer for answer in chapterquizes.answer]
+#         return original_answer
     
-    chapter=models.ForeignKey(Chapter,on_delete=models.PROTECT)
-    student=models.ForeignKey(Student,on_delete=models.PROTECT)
-    original_answer = get_original_answers
-    student_answer=[]
+#     chapter=models.ForeignKey(Chapter,on_delete=models.PROTECT)
+#     student=models.ForeignKey(Student,on_delete=models.PROTECT)
+#     original_answer = get_original_answers
+#     student_answer=[]
     
     
-    def save(self,*args,**kwargs):
-        self.student.progress=self.percentage
-        super().save(*args,**kwargs)
+#     def save(self,*args,**kwargs):
+#         self.student.progress=self.percentage
+#         super().save(*args,**kwargs)
+
+class StudentChapterQuizAnswer(models.Model):
+    
+    subjectquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE)
+    is_correct=models.BooleanField(default=False)
+    
+    
+class StudentChapterQuizProgressPercent(models.Model):
+    
+    chapter=models.ForeignKey(Chapter,on_delete=models.CASCADE)
+    chapterquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE)
+    progress=models.SmallIntegerField()
+    
+    
+    def quiz_count(self):
+        quizes=ChapterQuiz.objects.filter(chapter=self.chapter)
+        return quizes.count()
         
+    def correct_answer_count(self):
+        studentchapterquizanswer=StudentChapterQuizAnswer.objects.filter(is_correct=True,student=self.student,chapter=self.chapter)
+        return studentchapterquizanswer.count()
+    
+    def calculate_pass_percentage(self):
+        quiz_count=self.quiz_count()
+        correct_answer_count=self.correct_answer_count()
         
+        return (correct_answer_count/quiz_count)*100
+        
+      
         
 class SubjectNotes(models.Model):
     title=models.CharField(max_length=100)
     description=models.TextField()
     
-class SubjectReview(models.Model):
-    star=models.SmallIntegerField()
-    review=models.TextField()
+
     
 
         

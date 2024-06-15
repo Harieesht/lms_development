@@ -1,23 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import BaseHeader from '../partials/BaseHeader'
-import BaseFooter from '../partials/BaseFooter'
-import Sidebar from './Partials/Sidebar'
-import Header from './Partials/Header'
-
 function QA() {
   return (
     <>
-      {/* <BaseHeader /> */}
-    <Header />
       <section className="pb-5">
         <div className="container">
-          {/* Header Here */}
-          
           <div className="row mt-0 mt-md-4">
-            {/* Sidebar Here */}
-            <Sidebar />
             <div className="col-lg-9 col-md-8 col-12">
               <h4 className="mb-0 mb-4"> <i className='fas fa-envelope'></i> Question and Answer</h4>
 
