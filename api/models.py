@@ -142,14 +142,19 @@ class ChapterQuiz(models.Model):
 class StudentChapterQuizAnswer(models.Model):
     
     chapterquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
+    chapter=models.ForeignKey(Chapter,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
     is_correct=models.BooleanField(default=False)
+    
+    def save(self,*args,**kwargs):
+        self.chapter=self.chapterquiz.chapter
+        super().save(*args,**kwargs)
     
     
 class StudentChapterQuizProgressPercent(models.Model):
     
     chapter=models.ForeignKey(Chapter,on_delete=models.CASCADE)
-    chapterquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
+    # chapterquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
     progress=models.SmallIntegerField()
     

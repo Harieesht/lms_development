@@ -1,6 +1,7 @@
 import { useState,useEffect,useRef } from "react";
 import { useParams } from "react-router-dom";
 import useAxios from "../../utils/useAxios";
+import { useNavigate } from "react-router-dom";
 
 function Quizpage(){
 
@@ -12,6 +13,7 @@ function Quizpage(){
     const [choiceB,setChoiceB]=useState("");
     const [choiceC,setChoiceC]=useState("");
     const [choiceD,setChoiceD]=useState("");
+    const navigate = useNavigate();
     const param=useParams();
 
     
@@ -86,19 +88,45 @@ const handleSubmit = async (e) =>{
       const response = await useAxios().post(`user/subject/quiz/evaluate/${quizid[index]}`,formdata);
       if (response.status === 201){
         console.log(response)
+        if (index <= quizid.length-2){
         const currentindex=index+1;
-        setIndex(currentindex)
+        setIndex(currentindex);
+        setSelectedOption("")
+        }
+        else if (index === quizid.length-1){
+          handleFinalSubmit(e);
+        }
       }
       else {
         return {'error' : error}
       }
-      
-
     }
   
       catch(error){
                   
                   }
+}
+
+const handleFinalSubmit = async (e) => {
+  e.preventDefault();
+  const formdata = new FormData();
+  formdata.append('chapter_id',1)
+  try{
+    const response = useAxios().post("user/subject/quiz/evaluate_progress/",formdata);
+    if (response.status === 201){
+      console.log("Progress percentage have been saved...")
+      navigate('');
+    }
+    else{
+      console.log("error");
+      navigate('');
+    }
+  }
+  catch(error){
+    console.log("error");
+  }
+
+
 }
 
 
@@ -126,28 +154,32 @@ console.log(choiceD);
                 </div>
                 <div class="form-group">
                 <label for="option1">{choiceA}</label>
-                <input type="radio" class="" id="option1" name="options" placeholder="Enter option 1" onChange={()=>setSelectedOption("A")}/>
+                <input type="radio" class="" id="option1" name="options" placeholder="Enter option 1"
+                          checked={selectedOption === 'A'} onChange={()=>setSelectedOption("A")}/>
                 
                 </div>
                 <br/>
                 <div class="form-group">
                 <label for="option2">{choiceB}</label>
-                <input type="radio" class="" id="option2" name="options" placeholder="Enter option 2" onChange={()=>setSelectedOption("B")}/>
+                <input type="radio" class="" id="option2" name="options" placeholder="Enter option 2"  
+                          checked={selectedOption === 'B'} onChange={()=>setSelectedOption("B")}/>
                 </div>
                 <br/>
                 <div class="form-group">
                 <label for="option3">{choiceC}</label>
-                <input type="radio" class="" id="option3" name="options" placeholder="Enter option 3" onChange={()=>setSelectedOption("C")}/>
+                <input type="radio" class="" id="option3" name="options" placeholder="Enter option 3"  
+                          checked={selectedOption === 'C'} onChange={()=>setSelectedOption("C")}/>
                 </div>
                 <br/>
                 <div class="form-group">
                 <label for="option4">{choiceD}</label>
-                <input type="radio" class="" id="option4" name="options" placeholder="Enter option 4" onChange={()=>setSelectedOption("D")}/>
+                <input type="radio" class="" id="option4" name="options" placeholder="Enter option 4"  
+                          checked={selectedOption === 'D'} onChange={()=>setSelectedOption("D")}/>
                 </div>
                 
                 
                
-                <button type="submit" class="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                <button type="submit" class="btn btn-primary" onClick={ handleSubmit }>Next</button>
             </form>
             </div>
                 </>

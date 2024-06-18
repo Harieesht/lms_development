@@ -165,13 +165,14 @@ def quiz_evaluate(request,quiz_id):
     
     selected_option=request.data.get('selected_option')
     quizanswer=ChapterQuiz.objects.get(id=quiz_id).correct_answer
-    
+    print(quizanswer)
+    print(selected_option)
     
     if quizanswer == selected_option:
         is_correct=True
     else:
         is_correct=False
-    
+        
     
     user_id=decoded_token.get('user_id')
     
@@ -182,6 +183,7 @@ def quiz_evaluate(request,quiz_id):
             
             studentquizanswer=StudentChapterQuizAnswer.objects.get(chapterquiz_id=quiz_id,student_id=user_id)
             studentquizanswer.is_correct=is_correct
+            studentquizanswer.save()
             return Response({'message':'student answer is saved'},status=status.HTTP_201_CREATED)
         else:
            
@@ -191,6 +193,49 @@ def quiz_evaluate(request,quiz_id):
            
     except StudentChapterQuizAnswer.DoesNotExist :
         return Response({'error':"error"})
+
+@api_view(['POST'])   
+def chapter_quiz_evaluate(request):
+    
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    user_id=decoded_token.get('user_id')
+    chapter_id=request.data.get('chapter_id')
+    
+    chapterquizes=ChapterQuiz.objects.filter(chapter_id=chapter_id)
+    
+    chapterquizcount=chapterquizes.count()
+    print(chapterquizcount)
+    studentchapterquizanswercorrectcount=StudentChapterQuizAnswer.objects.filter(chapter_id=chapter_id,is_correct=True).count()
+    print(studentchapterquizanswercorrectcount)
+    
+    progress=(studentchapterquizanswercorrectcount/chapterquizcount)*100
+    
+    studentchapterprogressexists=StudentChapterQuizProgressPercent.objects.filter(chapter_id=chapter_id,student_id=user_id).exists()
+    
+    if studentchapterprogressexists:
+        
+        studentchapterprogress=StudentChapterQuizProgressPercent.objects.get(chapter_id=chapter_id,student_id=user_id)
+        studentchapterprogress.progress=progress
+        studentchapterprogress.save() 
+    else:
+        studentchapterprogress=StudentChapterQuizProgressPercent.objects.create(chapter_id=chapter_id,student_id=user_id,progress=progress)
+        studentchapterprogress.save() 
+        
+    
+    return Response({'message':'Progress have been saved'},status=status.HTTP_201_CREATED)
+
+    
+
+        
+    
+    
+    
     
     
             
