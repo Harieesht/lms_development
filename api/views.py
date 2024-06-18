@@ -135,13 +135,66 @@ def get_quiz_id(request,chapter_id):
     chapterquizid=[quiz.id for quiz in chapterquizes]
     return Response({'chapterquizid':chapterquizid},status=status.HTTP_201_CREATED)
 
-    
+@api_view(['GET']) 
 def get_quiz(request,quiz_id):
     
-    chapterquiz=ChapterQuiz.objects.get(id=quiz_id)
-    chapterquizserializer=api_serializers.ChapterQuizSerializer()
+    decoded_token=authenticate(request)
     
-    return Response({'quiz':chapterquizserializer.data},status=status.HTTP_200_OK)
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    try:
+        chapterquiz=ChapterQuiz.objects.get(id=quiz_id)
+    except ChapterQuiz.DoesNotExist:
+        return Response({'message': 'Quiz not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    chapterquizserializer=api_serializers.ChapterQuizSerializer(chapterquiz)
+    print(chapterquizserializer.data)
+    return Response(data=chapterquizserializer.data,status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def quiz_evaluate(request,quiz_id):
+    
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    selected_option=request.data.get('selected_option')
+    quizanswer=ChapterQuiz.objects.get(id=quiz_id).correct_answer
+    
+    
+    if quizanswer == selected_option:
+        is_correct=True
+    else:
+        is_correct=False
+    
+    
+    user_id=decoded_token.get('user_id')
+    
+    try:
+        quizanswerexist=StudentChapterQuizAnswer.objects.filter(chapterquiz_id=quiz_id,student_id=user_id).exists()
+        print(quizanswerexist)
+        if quizanswerexist:
+            
+            studentquizanswer=StudentChapterQuizAnswer.objects.get(chapterquiz_id=quiz_id,student_id=user_id)
+            studentquizanswer.is_correct=is_correct
+            return Response({'message':'student answer is saved'},status=status.HTTP_201_CREATED)
+        else:
+           
+           studentquizanswer = StudentChapterQuizAnswer.objects.create(chapterquiz_id=quiz_id,student_id=user_id,is_correct=is_correct)
+           studentquizanswer.save()
+           return Response({'message':'student answer is saved'},status=status.HTTP_201_CREATED)
+           
+    except StudentChapterQuizAnswer.DoesNotExist :
+        return Response({'error':"error"})
+    
+    
+            
+
 
     
     

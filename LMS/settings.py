@@ -261,6 +261,8 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+
+
 import os
 
 MEDIA_URL = '/media/'

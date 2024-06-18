@@ -95,6 +95,7 @@ class ChapterSerializer(ModelSerializer):
         return serializer.data
 
 class ChapterQuizSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model=ChapterQuiz
         fields='__all__'

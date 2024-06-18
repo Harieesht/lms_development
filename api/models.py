@@ -141,7 +141,7 @@ class ChapterQuiz(models.Model):
 
 class StudentChapterQuizAnswer(models.Model):
     
-    subjectquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
+    chapterquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
     is_correct=models.BooleanField(default=False)
     
