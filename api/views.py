@@ -230,6 +230,112 @@ def chapter_quiz_evaluate(request):
     
     return Response({'message':'Progress have been saved'},status=status.HTTP_201_CREATED)
 
+@api_view(['POST'])
+def save_subjects_notes(request):
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    note_title=request.data.get('note_title')
+    note_content=request.data.get('note_content')
+    note_subject_id=request.data.get('subject')
+    
+    note=SubjectNotes.objects.create(title=note_title,description=note_content,subject_id=note_subject_id)
+    
+    note.save()
+    
+    return Response({'message':'Notes have been saved...'},status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def post_question(request):
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    user_id=decoded_token.get('user_id')
+    
+    print(user_id)
+    
+    title=request.data.get("title")
+    question=request.data.get("question")
+    subject_id=request.data.get('subject_id')
+    try:
+        subjectquestion=SubjectQuestion.objects.create(student_id=user_id,subject_id=subject_id,title=title,question=question)
+        subjectquestion.save()
+        return Response({'message:question is saved'},status=status.HTTP_201_CREATED)
+    except SubjectQuestion.DoesNotExist:
+        return Response({'message':'question is not saved'},status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_questions(request,subject_id):
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    try:
+        subjectquestions=SubjectQuestion.objects.filter(subject_id=subject_id)
+        print(subjectquestions)
+    except SubjectQuestion.DoesNotExist:
+        return Response({'message':"Questions not found"},status=status.HTTP_404_NOT_FOUND)
+       
+    subjectquestionserailizer=api_serializers.SubjectQuestionSerializer(subjectquestions,many=True)
+    return Response({'questions':subjectquestionserailizer.data},status=status.HTTP_200_OK)
+@api_view(['GET'])
+def get_question_answers(request,question_id):
+    
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    try:
+        questionanswer=QuestionAnswers.objects.filter(subjectquestion_id=question_id)
+        print(questionanswer)
+    except QuestionAnswers.DoesNotExist:
+        return Response({'message':"No Post is Found"},status=status.HTTP_404_NOT_FOUND)
+    
+    questionanswersserializers=api_serializers.QuestionAnswerSerializer(questionanswer,many=True)
+    return Response({'answers':questionanswersserializers.data},status=status.HTTP_200_OK)
+        
+@api_view(['POST'])
+def post_question_answers(request):
+    
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    question_id=request.data.get('question_id')
+    answer=request.data.get('answer')
+    
+    
+    questionanswer=QuestionAnswers.objects.create(subjectquestion_id=question_id,answer=answer)
+    questionanswer.save()
+    
+    return Response({'message':'post have been saved'},status=status.HTTP_201_CREATED)
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
     
 
         

@@ -11,6 +11,11 @@ urlpatterns = [
     path('user/subject/quiz/<int:quiz_id>',api_views.get_quiz),
     path('user/subject/quiz/evaluate/<int:quiz_id>',api_views.quiz_evaluate),
     path('user/subject/quiz/evaluate_progress/',api_views.chapter_quiz_evaluate),
+    path('user/subject/post_question/',api_views.post_question),
+    path('user/subject/get_question/<int:subject_id>',api_views.get_questions), 
+    path('user/subject/get_question_answer/<int:question_id>',api_views.get_question_answers), 
+    path('user/subject/post_question_answer/',api_views.post_question_answers), 
+    
     
     
     

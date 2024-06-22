@@ -19,22 +19,7 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer):
         
         return token
 
-# class SubjectSerializer(ModelSerializer):
-    
-#     def calc_student_subject_progress(self,instance):
-#         user=self.context.get('user')
-#         student=Student.objects.get(user=user)
-#         # subject_id=self.data.get('id')
-#         subject_id=instance.id
-        
-#         subject_progress=SubjectProgress.objects.get(student=student,subject__id=subject_id)
-#         return subject_progress.progress
-    
-#     progress=serializers.SerializerMethodField(method_name="calc_student_subject_progress")
-    
-#     class Meta:
-#         model = Subject
-#         fields=['id','img','title','description','progress']
+
 
 
 class SubjectSerializer(ModelSerializer):
@@ -94,11 +79,25 @@ class ChapterSerializer(ModelSerializer):
         serializer=ChapterItemSerializer(items,many=True)
         return serializer.data
 
-class ChapterQuizSerializer(serializers.ModelSerializer):
+class ChapterQuizSerializer(ModelSerializer):
     
     class Meta:
         model=ChapterQuiz
         fields='__all__'
+        
+        
+class SubjectQuestionSerializer(ModelSerializer):
+    
+    class Meta:
+        model=SubjectQuestion
+        fields=['subject','title','id']
+        
+        
+class QuestionAnswerSerializer(ModelSerializer):
+    class Meta:
+        model=QuestionAnswers
+        fields='__all__'
+    
         
         
                 

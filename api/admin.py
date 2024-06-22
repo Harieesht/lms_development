@@ -79,6 +79,8 @@ admin.site.register(SubjectProgress)
 admin.site.register(ChapterQuiz)
 admin.site.register(StudentChapterQuizAnswer)
 admin.site.register(StudentChapterQuizProgressPercent)
+admin.site.register(SubjectQuestion)
+admin.site.register(QuestionAnswers)
 
 
 

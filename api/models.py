@@ -178,6 +178,30 @@ class StudentChapterQuizProgressPercent(models.Model):
 class SubjectNotes(models.Model):
     title=models.CharField(max_length=100)
     description=models.TextField()
+    subject=models.ForeignKey(Subject,on_delete=models.CASCADE)
+    
+    
+class SubjectQuestion(models.Model):
+    subject=models.ForeignKey(Subject,on_delete=models.CASCADE)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE) 
+    title=models.CharField(max_length=100)
+    question=models.TextField()
+    
+    
+    def __str__(self):
+        return f"{self.student.name}-{self.subject.title}-{self.id}question"
+    
+class QuestionAnswers(models.Model):
+    subjectquestion=models.ForeignKey(SubjectQuestion,on_delete=models.CASCADE)
+    
+    answer=models.TextField()
+    
+    def __str__(self):
+        return f"{self.subjectquestion}-answer"
+
+
+
+    
     
 
     
