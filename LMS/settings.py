@@ -281,7 +281,7 @@ USE_SPACES = True
 if USE_SPACES:
     # settings
     AWS_ACCESS_KEY_ID = "DO003PQL3MLT8FBNA4BQ"
-    AWS_SECRET_ACCESS_KEY = "6VoIQT/tBVBt5/M4WxyLT0H/FValwptRXi/jUc5XvlM"
+    AWS_SECRET_ACCESS_KEY = 
     AWS_STORAGE_BUCKET_NAME = "lmsbucket"
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_ENDPOINT_URL = 'https://BLR1.digitaloceanspaces.com'
