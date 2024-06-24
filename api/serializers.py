@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
+
 from .models import *
 from users.models import *
 from rest_framework import serializers
@@ -11,16 +12,15 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer):
     def get_token(cls,user):
         token=super().get_token(user)
         
-        token['user_id'] = user.user_id
-        token['user_type']=user.user_type
+        token['user_id'] = user.user_id 
+        token['username'] = user.username
+        token['user_type']=user.user_type 
+        token['user_image'] = settings.BASE_URL+user.user_image.url
         token['college']=user.college.name
         token['program']=Student.objects.get(user=user).program.name 
             
         
         return token
-
-
-
 
 class SubjectSerializer(ModelSerializer):
     
@@ -41,30 +41,15 @@ class SubjectSerializer(ModelSerializer):
         model = Subject
         fields=['id','img','title','description','progress']
 
-    def to_representation(self, instance):
-        
-        ret = super().to_representation(instance)
-
-        ret['img']=settings.BASE_URL+ret['img']
-
-        return ret
-        
         
         
 class ChapterItemSerializer(ModelSerializer):
     
     class Meta:
         model=ChapterItem
-        fields=['description','video']
+        fields=['description','video','ppt']
         
-    def to_representation(self, instance):
-        
-        ret = super().to_representation(instance)
 
-        ret['video']=settings.BASE_URL+ret['video']
-
-        return ret
-        
         
 class ChapterSerializer(ModelSerializer):
     
@@ -72,20 +57,21 @@ class ChapterSerializer(ModelSerializer):
     
     class Meta:
         model=Chapter
-        fields=['name','description','items']
+        fields=['id','name','description','items']
 
     def get_items(self,obj):
         items=obj.items.all()
         serializer=ChapterItemSerializer(items,many=True)
         return serializer.data
-
-class ChapterQuizSerializer(ModelSerializer):
+        
+                 
+class ChapterQuizSerializer(serializers.ModelSerializer):
     
     class Meta:
         model=ChapterQuiz
-        fields='__all__'
-        
-        
+        fields='__all__'        
+
+
 class SubjectQuestionSerializer(ModelSerializer):
     
     class Meta:
@@ -97,10 +83,5 @@ class QuestionAnswerSerializer(ModelSerializer):
     class Meta:
         model=QuestionAnswers
         fields='__all__'
-    
-        
-        
-                
-        
         
     

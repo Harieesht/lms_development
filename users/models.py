@@ -19,7 +19,8 @@ class User(AbstractUser):
     ]
     name=models.CharField(max_length=200,unique=True)
     user_id=models.CharField(max_length=100,editable=False,primary_key=True)
-    user_type = models.CharField(max_length=100, choices=USER_TYPES)
+    user_type = models.CharField(max_length=100, choices=USER_TYPES) 
+    user_image = models.FileField(upload_to="path-to-upload")
     college = models.ForeignKey('api.College', on_delete=models.PROTECT, null=True)
         
     

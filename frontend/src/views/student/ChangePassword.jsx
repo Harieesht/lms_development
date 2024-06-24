@@ -42,9 +42,9 @@ function ChangePassword() {
   
   
 
-  return (
-    <>
-      <div className="container-fluid d-flex align-items-center justify-content-center my-5">
+  return ( 
+    <section className="section px-2 px-lg-5 py-4">
+      <div className="container-fluid d-flex align-items-center justify-content-center">
         <div className="card hover-overlay shadow-lg p-4 rounded-4 w-lg-100">
           <div className="p-3"> 
              <h1 className="card-title fs-5 fw-bold">Create new password</h1>
@@ -74,8 +74,8 @@ function ChangePassword() {
               </form>
             </div>
           </div>
-        </div>
-    </>
+        </div> 
+      </section>
   );
 }
 

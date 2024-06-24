@@ -1,7 +1,8 @@
 import { login } from '../../utils/auth'  
 import apiInstance from '../../utils/axios' 
 import { useState,useEffect } from 'react'    
-import { Link,useNavigate } from 'react-router-dom' 
+import { Link,useNavigate } from 'react-router-dom'  
+import "../student/Css/Login.css"
 
 function Login() {
   const[username,setUsername]=useState("");
@@ -25,18 +26,15 @@ function Login() {
 
   } 
   return (
-    <>  
-      <section className="container d-flex  flex-column" style={{ marginTop: "150px" }}>
-        <div className="row align-items-center justify-content-center g-0 h-lg-100 py-8 ">
-          <div className="col-lg-4 col-md-8 py-8 py-xl-0  ">
-            <div className="card shadow-lg bg-dark rounded-4">
-              <div className="card-body p-4 p-lg-5 p-md-5 p-sm-5 text-white">
+    <>   
+    <section className="login-container px-3 p-sm-5"> 
+        <div className="row d-flex align-items-center justify-content-center">
+          <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+              <div className="login-card my-sm-4 px-4 px-md-5 py-5 rounded-4 shadow-lg ">
                 <div className="mb-4 text-center"> 
                   <img src="/public/MH_COCKPIT_LOGO.png" alt="MH_COCKPIT" className='img-fluid w-50' />
                 </div>
-                {/* Form */}
                 <form className="needs-validation" noValidate="" onSubmit={handleSubmit}>
-                  {/* Username */}
                   <div className="mb-3">
                     <label htmlFor="email" className="form-label">
                       Username
@@ -54,7 +52,6 @@ function Login() {
                       Please enter valid username.
                     </div>
                   </div>
-                  {/* Password */}
                   <div className="mb-4">
                     <label htmlFor="password" className="form-label">
                       Password
@@ -72,9 +69,8 @@ function Login() {
                       Please enter valid password.
                     </div>
                   </div>
-                  {/* Checkbox */}
-                  <div className="d-lg-flex justify-content-between align-items-center mb-3">
-                    <div className="form-check">
+                  <div className="d-flex justify-content-end align-items-center mb-3">
+                 {/*    <div className="form-check">
                       <input
                         type="checkbox"
                         className="form-check-input"
@@ -83,28 +79,24 @@ function Login() {
                       />
                       <label className="form-check-label" htmlFor="rememberme">
                         Remember me
-                      </label>
+                      </label> 
                       <div className="invalid-feedback">
                         You must agree before submitting.
                       </div>
-                    </div>
+                    </div>*/}
                     <div>
-                      <Link to="/forgot-password/">Forgot password?</Link>
+                      <Link to="/forgot-password/" className='link-dark'>Forgot password?</Link>
                     </div>
                   </div>
                   <div>
                     <div className="d-grid">
                     <button type="submit" className="btn btn-primary" disabled={isLoading}>
-                         {isLoading ? <i className="fas fa-spinner fa-spin"></i> : 'Log in'}
+                         {isLoading ? <i className="fas fa-spinner fa-spin"></i> : 'Sign in'}
                     </button>
                     </div> 
                     <div className='text-center mt-4'> 
                       <span className='fs-7'> 
                         Copyright © MH Academy Pvt. Ltd. 2024 
-                         {/* Don’t have an account?
-                        <Link to="/register/" className="ms-1">
-                         Sign up
-                        </Link> */}
                        </span>
                     </div>
                   </div>
@@ -112,7 +104,6 @@ function Login() {
               </div>
             </div>
           </div>
-        </div>
       </section>
     </>
   )

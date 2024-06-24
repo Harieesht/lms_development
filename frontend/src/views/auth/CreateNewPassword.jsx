@@ -1,13 +1,8 @@
 import React from 'react'
-import BaseHeader from '../base/partials/BaseHeader'
-import BaseFooter from '../base/partials/BaseFooter'
-
 
 function CreateNewPassword() {
   return (
     <>
-      <BaseHeader />
-
       <section className="container d-flex flex-column vh-100" style={{ marginTop: "150px" }}>
         <div className="row align-items-center justify-content-center g-0 h-lg-100 py-8">
           <div className="col-lg-5 col-md-8 py-8 py-xl-0">
@@ -70,8 +65,6 @@ function CreateNewPassword() {
           </div>
         </div>
       </section>
-
-      <BaseFooter />
     </>
   )
 }

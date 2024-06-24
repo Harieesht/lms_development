@@ -8,10 +8,10 @@ const Profile = () => {
         email: 'Murali@mail.com',
         phone: '9626659448',
         birthday: 'May 3, 1995',
-        addressLine1: '',
-        addressLine2: '',
-        state: 'Canada',
-        country: 'Canada',
+        address: 'knfnnbtrbnrtnbn',
+        gender: 'Male', 
+        state: 'Tamilnadu',
+        country: 'India',
     });
 
     const [errors, setErrors] = useState({});
@@ -39,41 +39,42 @@ const Profile = () => {
             validationErrors.phone = 'Phone number must be at least 10 digits';
         }
         return validationErrors;
+    }; 
+     
+    const [activeSelect, setActiveSelect] = useState(null);
+
+    const handleSelectClick = (index) => {
+        setActiveSelect(index);
     };
 
-    return (
-        <div className="container-fluid my-4 px-2 px-sm-4 px-xxl-5">
-            <div className="card shadow-lg p-3">
-                <div className="card-body media d-flex align-items-center justify-content-between mb-4">  
-                  <div><h1 >{formData.username}</h1></div>  
-                  <div>
+    const handleBlur = () => {
+        setActiveSelect(null);
+    };
+    
+
+    return ( 
+    <section className="section px-2 px-lg-5 py-4">
+        <div className="container-fluid">
+            <div className="card shadow-lg py-3 px-2 px-lg-5">
+                <div className="row card-body media d-flex align-items-center justify-content-between mb-4">  
+                  <div className='col'><h1 className='fw-bold fs-3'>Welcome ,back <br/><span className='text-success'>{formData.username}!</span></h1></div>  
+                  <div className='col d-flex align-items-center justify-content-end'>
                     <div className="media-body text-end ml-4">
-                        <label className="me-3 btn btn-outline-primary btn-sm">
-                            Update
-                            <input type="file" className="account-settings-fileinput" />
+                        <label className="me-2 btn btn-outline-primary btn-sm">
+                            Update<input type="file" className="d-none"/>
                         </label>
-                        <button type="button" className="btn btn-default btn-sm">Delete</button>
-                        <div className="text-dark small mt-3">Allowed JPG or PNG. Max size of 800K</div>
+                        <button type="button" className="btn btn-outline-secondary btn-sm">Delete</button>
+                        <div className="small mt-2">Allowed JPG or PNG. Max size of 800K</div>
                     </div> 
-                    <img src="/public/student.jpg" alt="" className="ms-4 rounded-3" style={{ width: '100px', height: '100px' }} /> 
+                    <img src="/public/student.jpg" alt="" className="ms-3 rounded-circle" style={{ width: '120px', height: '120px' }} /> 
                   </div>
                 </div>
-                <hr className="border-dark m-0" />
+                <hr className="m-0" />
                 <div className="card-body mt-3">
                     <h4>Personal Details</h4>
-                    <p className="mb-4">Edit your personal information and address.</p>
+                    <p className="mb-5">Edit your personal information and address.</p>
                     <form onSubmit={handleSubmit} noValidate>
                         <div className="row">
-                            <div className="form-group col-12 col-md-6">
-                                <label className="form-label">Username</label>
-                                <input
-                                    type="text"
-                                    name="username"
-                                    value={formData.username}
-                                    onChange={handleChange}
-                                    className="form-control mb-3"
-                                />
-                            </div>
                             <div className="form-group col-12 col-md-6">
                                 <label className="form-label">First Name</label>
                                 <input
@@ -117,74 +118,85 @@ const Profile = () => {
                                 {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
                             </div>
                             <div className="form-group col-12 col-md-6">
-                                <label className="form-label">Birthday</label>
+                                <label className="form-label">Date of Birth</label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     name="birthday"
                                     value={formData.birthday}
                                     onChange={handleChange}
                                     className="form-control mb-3"
                                 />
-                            </div>
+                            </div> 
                             <div className="form-group col-12 col-md-6">
-                                <label className="form-label">Address Line 1</label>
-                                <input
-                                    type="text"
-                                    name="addressLine1"
-                                    value={formData.addressLine1}
-                                    onChange={handleChange}
-                                    className="form-control mb-3"
-                                />
+                                <label className="form-label">Gender</label> 
+                                <div className="select-wrapper">
+                                <select
+                                    name="gender"
+                                    value={formData.gender}
+                                    onChange={handleChange} 
+                                    onClick={() => handleSelectClick(1)}
+                                    onBlur={handleBlur}
+                                    className="form-control mb-3">
+                                    <option>Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>  
+                                <i className={`fas fa-chevron-down select-icon ${activeSelect === 1 ? 'rotate' : ''}`}></i> 
+                               </div>
                             </div>
-                            <div className="form-group col-12 col-md-6">
-                                <label className="form-label">Address Line 2</label>
-                                <input
-                                    type="text"
-                                    name="addressLine2"
-                                    value={formData.addressLine2}
-                                    onChange={handleChange}
-                                    className="form-control mb-3"
-                                />
-                            </div>
-                            <div className="form-group col-12 col-md-6">
-                                <label className="form-label">State</label>
+                            <div className="form-group col-12">
+                                <label className="form-label">Address</label>
+                                 <textarea className="form-control mb-3" rows="5" name='address'  value={formData.address} onChange={handleChange}> 
+                                 </textarea>
+                             </div> 
+                             <div className="form-group col-12 col-md-6">
+                                <label className="form-label">State</label> 
+                                <div className="select-wrapper">
                                 <select
                                     name="state"
                                     value={formData.state}
-                                    onChange={handleChange}
-                                    className="form-control mb-3"
-                                >
-                                    <option>USA</option>
-                                    <option>Canada</option>
+                                    onChange={handleChange}  
+                                    onClick={() => handleSelectClick(2)}
+                                    onBlur={handleBlur}
+                                    className="form-control mb-3">
+                                    <option>Select state</option>
+                                    <option>Tamilnadu</option>
                                     <option>UK</option>
                                     <option>Germany</option>
                                     <option>France</option>
-                                </select>
+                                </select> 
+                                <i className={`fas fa-chevron-down select-icon ${activeSelect === 2 ? 'rotate' : ''}`}></i>  
+                                </div>
                             </div>
                             <div className="form-group col-12 col-md-6">
-                                <label className="form-label">Country</label>
+                                <label className="form-label">Country</label> 
+                                <div className="select-wrapper">
                                 <select
                                     name="country"
                                     value={formData.country}
-                                    onChange={handleChange}
-                                    className="form-control mb-3"
-                                >
-                                    <option>USA</option>
-                                    <option>Canada</option>
+                                    onChange={handleChange} 
+                                    onClick={() => handleSelectClick(3)}
+                                    onBlur={() => setActiveSelect(false)}
+                                    className="form-control mb-3">
+                                    <option>Select country</option>
+                                    <option>India</option>
                                     <option>UK</option>
                                     <option>Germany</option>
                                     <option>France</option>
-                                </select>
+                                </select>  
+                                <i className={`fas fa-chevron-down select-icon ${activeSelect === 3 ? 'rotate' : ''}`}></i>  
+                              </div>
                             </div>
                         </div>
-                        <div className="text-end mt-5">
-                           <button type="button" className="btn btn-primary">Save changes</button>&nbsp;
-                           <button type="button" className="btn btn-default">Cancel</button>
+                        <div className="text-end mt-4">
+                           <button type="button" className="btn btn-primary me-2">Save changes</button>&nbsp;
+                           <button type="button" className="btn btn-secondary">Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
+        </div> 
+     </section>
     );
 };
 

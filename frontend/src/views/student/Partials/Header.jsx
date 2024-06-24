@@ -1,40 +1,3 @@
-// import React from 'react'
-
-// function Header() {
-//     return ( 
-//      <nav className='bg-dark text-white'> 
-//         <div className="">
-//             <div className="">
-//                 <div className="px-3 px-lg-5 py-3 shadow-sm">
-//                     <div className="d-flex align-items-center justify-content-between"> 
-//                        <div> 
-//                           <img src="/public/MH_COCKPIT_LOGO.png" alt="MH" width="180" className="d-inline-block img-fluid"/>
-//                        </div>
-//                         <div className="d-flex align-items-center"> 
-//                             <div className="me-2 position-relative d-flex justify-content-end align-items-end mt-n5">
-//                                 <img src="/public/student.jpg" className="avatar-xl rounded-circle border border-2 border-white" alt="avatar" style={{ width: "55px", height: "55px", borderRadius: "50%", objectFit: "cover" }} />
-//                             </div>
-//                             <div className="lh-1">
-//                                 <h5 className="mb-1"> student name</h5>
-//                                 <p className="mb-0 d-block">@desphixs</p>
-//                             </div>
-//                         </div>
-//                         {/* <div>
-//                             <a href="profile-edit.html" className="btn btn-primary btn-sm d-none d-md-block" >
-//                                 Account Setting <i className='fas fa-gear fa-spin'></i>
-//                             </a>
-//                         </div> */}
-//                     </div>
-//                 </div>
-//             </div>
-//         </div> 
-//       </nav>
-//     )
-// }
-
-// export default Header 
- 
-
 import React, { useState, useEffect } from 'react';   
 import Cookie from "js-cookie"  
 import { logout } from "../../../utils/auth.js"; 
@@ -84,13 +47,13 @@ function Header({ toggleSidebar }) {
                           <span className="ball"></span>
                       </label>
                </li>    
-               <li className='me-3'>  
-                    <a href="" className='position-relative'><i className="bi bi-ticket-detailed fs-5"></i>
-                         <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
-                         </span> 
-                      </a>
-                </li>
+               <li className='me-3'>   
+                    <Link to={`/student/ticket`} className='position-relative'><i className="bi bi-ticket-detailed fs-5"></i>
+                       <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                       </span> 
+                    </Link>
+                </li>  
                <li className='nav-notify dropdown me-4 position-relative'>  
                     <div className="cursor-pointer navbar-link " data-bs-toggle="dropdown" aria-expanded="false"> 
                       <a href="" className='position-relative'><i className="bi bi-bell fs-5"></i>
@@ -130,7 +93,7 @@ function Header({ toggleSidebar }) {
                 </li>
             </ul>
         </div>
-    </nav>
+    </nav> 
     );
 }
 

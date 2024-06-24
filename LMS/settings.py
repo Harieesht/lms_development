@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent 
+ 
+BASE_URL="http://127.0.0.1:8000"
 
 AUTH_USER_MODEL = 'users.User' #Custom User Class
 # Quick-start development settings - unsuitable for production
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
+    
+    'storages',
     #custom apps
     'api',
     'users',
@@ -92,8 +96,6 @@ DATABASES = {
     }
 }
 
-BASE_URL='http://127.0.0.1:8000'
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -139,8 +141,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+import os
+
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    # Add more directories if necessary
+]
 # STATIC_ROOT=os.path.join(BASE_DIR,"staticfiles")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -261,9 +269,28 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+# settings.py
 
 
-import os
+# # Media files
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+USE_SPACES = True
+
+if USE_SPACES:
+    # settings
+    AWS_ACCESS_KEY_ID = "DO003PQL3MLT8FBNA4BQ"
+    AWS_SECRET_ACCESS_KEY = "6VoIQT/tBVBt5/M4WxyLT0H/FValwptRXi/jUc5XvlM"
+    AWS_STORAGE_BUCKET_NAME = "lmsbucket"
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_ENDPOINT_URL = 'https://BLR1.digitaloceanspaces.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # static settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'LMS.storage_backends.PublicMediaStorage'
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'mediafiles'
+

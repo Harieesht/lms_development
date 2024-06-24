@@ -61,7 +61,7 @@ class Subject(models.Model):
 
     def __str__(self):
         """String representation of the Subject."""
-        return f"{self.title}-{self.id}"
+        return self.title
 
 
 class Chapter(models.Model):
@@ -80,7 +80,7 @@ class Chapter(models.Model):
 
     def __str__(self):
         """String representation of the Chapter."""
-        return self.name
+        return f"{self.name}-{self.id}"
 
 class ChapterItem(models.Model):
     
@@ -89,7 +89,7 @@ class ChapterItem(models.Model):
     ppt=models.FileField(upload_to='path-to-upload')
     video=models.FileField(upload_to='path-to-upload',default='https://www.youtube.com/watch?v=SqcY0GlETPk')
     
-    def __str__(self):
+    def _str_(self):
         return f"{self.chapter}-item{self.id}"
     
 
@@ -99,10 +99,10 @@ class SubjectProgress(models.Model):
     progress=models.PositiveSmallIntegerField()
     completed=models.BooleanField(default=False)
     
-    def save(self,*args,**kwargs):
+    def save(self,args,*kwargs):
         if self.progress==100:
             self.completed=True
-        super().save(*args,**kwargs)
+        super().save(args,*kwargs)
 
     
 class ChapterQuiz(models.Model):
@@ -122,22 +122,6 @@ class ChapterQuiz(models.Model):
     choice_d=models.CharField(max_length=200)
     correct_answer=models.CharField(max_length=1,choices=answer)
     
-# class ChapterQuizAnswer(models.Model):
-    
-#     def get_original_answers(self):
-#         chapterquizes=ChapterQuiz.objects.filter(chapter=self.chapter)
-#         original_answer=[answer for answer in chapterquizes.answer]
-#         return original_answer
-    
-#     chapter=models.ForeignKey(Chapter,on_delete=models.PROTECT)
-#     student=models.ForeignKey(Student,on_delete=models.PROTECT)
-#     original_answer = get_original_answers
-#     student_answer=[]
-    
-    
-#     def save(self,*args,**kwargs):
-#         self.student.progress=self.percentage
-#         super().save(*args,**kwargs)
 
 class StudentChapterQuizAnswer(models.Model):
     
@@ -156,7 +140,7 @@ class StudentChapterQuizProgressPercent(models.Model):
     chapter=models.ForeignKey(Chapter,on_delete=models.CASCADE)
     # chapterquiz=models.ForeignKey(ChapterQuiz,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
-    progress=models.SmallIntegerField()
+    progress=models.IntegerField()
     
     
     def quiz_count(self):
@@ -173,14 +157,7 @@ class StudentChapterQuizProgressPercent(models.Model):
         
         return (correct_answer_count/quiz_count)*100
         
-      
-        
-class SubjectNotes(models.Model):
-    title=models.CharField(max_length=100)
-    description=models.TextField()
-    subject=models.ForeignKey(Subject,on_delete=models.CASCADE)
-    
-    
+ 
 class SubjectQuestion(models.Model):
     subject=models.ForeignKey(Subject,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE) 
@@ -198,22 +175,3 @@ class QuestionAnswers(models.Model):
     
     def __str__(self):
         return f"{self.subjectquestion}-answer"
-
-
-
-    
-    
-
-    
-
-        
-    
-        
-        
-        
-    
-    
-    
-
-        
-    

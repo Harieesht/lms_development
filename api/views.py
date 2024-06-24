@@ -89,10 +89,12 @@ def get_chapter_detail(request,chapter_id):
     
     chapteritemsserializer=api_serializers.ChapterItemSerializer(chapteritems,many=True)
     
-    return Response({'chapteritems':chapteritemsserializer.data},status=status.HTTP_200_OK)    
-
+    return Response({'chapteritems':chapteritemsserializer.data},status=status.HTTP_200_OK)  
+    
+ 
 @api_view(['GET','POST'])
 def password_reset(request):
+
     decoded_token=authenticate(request)
     
     if decoded_token.get('message'):
@@ -106,18 +108,20 @@ def password_reset(request):
     if user is None:
         return Response({'message':"this user doesnt exist..."},status=status.HTTP_404_NOT_FOUND)
     
-    old_password=request.data.get('old_password')
-    new_password=request.data.get('new_password')
+    old_password=request.data.get('currentPassword')
+    new_password=request.data.get('newPassword')
     
     user_password=user.check_password(old_password)
     
     if user_password is False:
-        return Response({'message':"old password is not right....."},status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'message':"current password is not right....."},status=status.HTTP_401_UNAUTHORIZED)
     else:
         user.password=new_password
         user.save()
         return Response({'message':'password has been changed'},status=status.HTTP_201_CREATED)
+        
 
+    
 @api_view(['GET'])
 def get_quiz_id(request,chapter_id):
     
@@ -130,7 +134,7 @@ def get_quiz_id(request,chapter_id):
     
     user_id=decoded_token.get('user_id')
     
-    chapterquizes=ChapterQuiz.objects.filter(chapter__id=chapter_id)
+    chapterquizes=ChapterQuiz.objects.filter(chapter__id=chapter_id).order_by('?')
     
     chapterquizid=[quiz.id for quiz in chapterquizes]
     return Response({'chapterquizid':chapterquizid},status=status.HTTP_201_CREATED)
@@ -151,8 +155,8 @@ def get_quiz(request,quiz_id):
     
     chapterquizserializer=api_serializers.ChapterQuizSerializer(chapterquiz)
     print(chapterquizserializer.data)
-    return Response(data=chapterquizserializer.data,status=status.HTTP_200_OK)
-
+    return Response(data=chapterquizserializer.data,status=status.HTTP_200_OK) 
+ 
 @api_view(['POST'])
 def quiz_evaluate(request,quiz_id):
     
@@ -228,26 +232,7 @@ def chapter_quiz_evaluate(request):
         studentchapterprogress.save() 
         
     
-    return Response({'message':'Progress have been saved'},status=status.HTTP_201_CREATED)
-
-@api_view(['POST'])
-def save_subjects_notes(request):
-    decoded_token=authenticate(request)
-    
-    if decoded_token.get('message'):
-        message=decoded_token.get('message')
-        message_status=decoded_token.get('status')
-        return Response({'message':message},status=message_status)
-    
-    note_title=request.data.get('note_title')
-    note_content=request.data.get('note_content')
-    note_subject_id=request.data.get('subject')
-    
-    note=SubjectNotes.objects.create(title=note_title,description=note_content,subject_id=note_subject_id)
-    
-    note.save()
-    
-    return Response({'message':'Notes have been saved...'},status=status.HTTP_201_CREATED)
+    return Response({'message':'Progress have been saved','progress':studentchapterprogress.progress},status=status.HTTP_201_CREATED) 
 
 @api_view(['POST'])
 def post_question(request):
@@ -288,7 +273,8 @@ def get_questions(request,subject_id):
         return Response({'message':"Questions not found"},status=status.HTTP_404_NOT_FOUND)
        
     subjectquestionserailizer=api_serializers.SubjectQuestionSerializer(subjectquestions,many=True)
-    return Response({'questions':subjectquestionserailizer.data},status=status.HTTP_200_OK)
+    return Response({'questions':subjectquestionserailizer.data},status=status.HTTP_200_OK) 
+
 @api_view(['GET'])
 def get_question_answers(request,question_id):
     
@@ -327,36 +313,6 @@ def post_question_answers(request):
     
     return Response({'message':'post have been saved'},status=status.HTTP_201_CREATED)
     
-    
-    
-    
-    
-    
-    
-      
-    
-    
-    
-
-        
-    
-    
-    
-    
-    
-            
-
-
-    
-    
-    
-
-            
-        
-
-    
-    
-
     
     
         

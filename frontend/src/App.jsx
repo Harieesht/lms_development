@@ -17,20 +17,19 @@ import Success from "./views/base/Success";
 import Search from "./views/base/Search";
  
 //Student Pages 
-import StudentLayout from './views/student/StudentLayout';
+import StudentLayout from './views/student/layout/StudentLayout';
 import StudentDashboard from './views/student/Dashboard' 
 import StudentChangePassword from './views/student/ChangePassword' 
 import StudentCourseDetail from './views/student/CourseDetail' 
 import StudentCourse from './views/student/Courses' 
 import StudentProfile from './views/student/Profile' 
-import StudentQA from './views/student/QA' 
+import StudentQA from './views/student/QA'  
+import StudentQuiz from './views/student/Quiz'  
+import StudentTicket from './views/student/Tickets'
 import StudentQADetail from './views/student/QADetail' 
 import StudentCourseLectureDetail from './views/student/StudentCourseLectureDetail' 
 import StudentWishlist from './views/student/Wishlist' 
-import Quizpage from './views/student/QuizPage'
- 
-
-import 'bootstrap/dist/css/bootstrap.min.css';    
+  
 
 function App() {
   return (
@@ -44,12 +43,12 @@ function App() {
           <Route path="/create-new-password/"  element={<CreateNewPassword />}  />
 
           {/* Base Routes */} 
-          <Route path="/" element={<Index />} />
+          {/* <Route path="/" element={<Index />} />
           <Route path="/course-detail/:slug/" element={<CourseDetail />} />
           <Route path="/cart/" element={<Cart />} />
           <Route path="/checkout/:order_oid/" element={<Checkout />} />
           <Route path="/payment-success/:order_oid/" element={<Success />}/>
-          <Route path="/search/" element={<Search />} />
+          <Route path="/search/" element={<Search />} /> */}
             
       
           {/* Student Routes */} 
@@ -63,8 +62,9 @@ function App() {
             <Route path="change-password/" element={<StudentChangePassword/>} />   
             <Route path='question-answer/' element={<StudentQA/>} /> 
             <Route path='qa-deatails/' element={<StudentQADetail/>} /> 
-            <Route path='lecture-details/' element={<StudentCourseLectureDetail/>} />
-            <Route path='quiz-page/' element={<Quizpage />} />
+            <Route path='lecture-details/' element={<StudentCourseLectureDetail/>} /> 
+            <Route path='quiz/:chapterid' element={<StudentQuiz/>} /> 
+            <Route path='ticket/' element={<StudentTicket/>} />
           </Route>
         </Routes> 
       </MainWrapper> 

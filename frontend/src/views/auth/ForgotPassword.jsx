@@ -1,13 +1,10 @@
 import React from 'react'
-import BaseHeader from '../base/partials/BaseHeader'
-import BaseFooter from '../base/partials/BaseFooter'
 import { Link } from 'react-router-dom'
 
 
 function ForgotPassword() {
   return (
     <>
-      <BaseHeader />
 
       <section className="container d-flex flex-column vh-100" style={{ marginTop: "150px" }}>
         <div className="row align-items-center justify-content-center g-0 h-lg-100 py-8">
@@ -48,8 +45,6 @@ function ForgotPassword() {
           </div>
         </div>
       </section>
-
-      <BaseFooter />
     </>
   )
 }

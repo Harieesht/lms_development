@@ -1,135 +1,100 @@
-/* .card-slider{
-    width: 100%;
-    position: relative;  
-    margin-top: 5rem;    
-  }    
-  
-  .card-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;  
-    gap: 2rem;
-    overflow-x: hidden; 
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;     
-    transition: scroll 1s ease-in-out;  
-  } 
-  
-  
-  .progress {
-    height: 0.5rem;
-    border-radius: 0.5rem;
-  }
-  
-  .progress-bar {
-    border-radius: 0.5rem;
-  }
-    
-  
-  .swiper-buttons {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%; 
-    display: flex;
-    justify-content: space-between;   
-    z-index: 10;
-  }
-  
-  
-   
-  .swiper-buttons-prev, .swiper-buttons-next {
-    border: none; 
-    background: none;   
-    cursor: pointer;
-    animation: floatAnimation 2s infinite alternate; 
-    font-size: 1.5rem;   
-  
-  } 
-   
-  .swiper-buttons-prev{ 
-    margin-left: -1rem;
-  }
-    
-  .swiper-buttons-next{ 
-    margin-right: -2rem;
-  }
-   
-  
-  @keyframes floatAnimation {
-    0% {
-      transform: translateX(0); 
-    }
-    50% {
-      transform: translateX(-5px); 
-    }
-    100% {
-      transform: translateX(0);
-    }
-  } */ 
-/* 
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+.card-container { 
+  display: flex; 
+  align-items: center;
+  justify-content: center;   
+  position: relative;
+}
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  body {  
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    background: #343f4f;
-  }
-   */ 
-    
+.card-container .card-content {
+  margin-inline: 0rem;
+  border-radius: 0.8rem;
+  overflow: hidden;
+} 
 
-  .card-wrapper { 
-    position: relative; 
-  }  
-   
-  .card-container{  
-    padding: 20px; 
-    background: transparent; 
-  }
-   
-  .card-container .card{  
-    display: flex;
-    justify-content: center;
-    padding: 15px; 
-    box-sizing: border-box; 
-    border: none; 
-  }    
-   
-  /* .card-container .card-body{  
-    background-color: rgb(245, 225, 225);
-  } */
-    
-  button.slick-arrow{ 
-    background: #282829;   
-    border-radius: 50%; 
- }  
-   
-  button.slick-arrow:focus{ 
-    background: #000; 
-  } 
+
+.card-container .card{
+  width: 150px;
+  border-radius: 0.8rem;
+  overflow: hidden;
+} 
+  
+
+.progress-bar.animate {
+  animation: loading 3s ease-out forwards;
+}
+
+@keyframes loading {
+  from { width: 0; }
+}
  
-  button.slick-arrow:hover{ 
-    background: #000; 
+.card-container .card-title{ 
+  height: 30px;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  content: ""; 
+  display: none;
+}
+
+.swiper-button-prev,
+.swiper-button-next { 
+  position: absolute;
+  width: initial;
+  height: initial;
+  font-size: 1.8rem;   
+  color: var(--bs-emphasis-color) !important;   
+ 
+}
+
+.swiper-button-next {
+  right: 0;  
+  animation: float1 2s infinite ease-in-out;
+}  
+ 
+.swiper-button-prev { 
+  left: 0;  
+  animation: float2 2s infinite ease-in-out;
+}  
+ 
+.swiper-button-disabled  { 
+  visibility: hidden !important;
+}  
+ 
+@keyframes float1 {
+  0% {
+    transform: translateX(0);
   } 
-
-  .card-container .progress{
-    height: 0.5rem;
-    border-radius: 0.5rem;
+  50% {
+    transform: translateX(10px);
+  } 
+  100% {
+    transform: translateX(0);
   }
+} 
+ 
+@keyframes float2 {
+  0% {
+    transform: translateX(0);
+  } 
+  50% {
+    transform: translateX(-10px);
+  } 
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+/* @media screen and (min-width: 768px) {
+  .card-content {
+    margin-inline: 3rem;
+  } 
+} */ 
   
-  .card-container .progress-bar { 
-    height: 0.5rem;
-    border-radius: 0.5rem;
-  }
+.chart-container {
+  position: relative;
+  margin: auto;
 
-
-    
+}
+ 
