@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+
+import os
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent 
  
@@ -22,7 +29,7 @@ AUTH_USER_MODEL = 'users.User' #Custom User Class
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nm%5)5gppw603c)z*4)rq*cx$+nt(v$%w_^x2u&yn1%=kfn#d2'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -140,8 +147,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-import os
 
 STATIC_URL = 'static/'
 
@@ -280,8 +285,8 @@ USE_SPACES = True
 
 if USE_SPACES:
     # settings
-    AWS_ACCESS_KEY_ID = "DO003PQL3MLT8FBNA4BQ"
-    AWS_SECRET_ACCESS_KEY = 
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = "lmsbucket"
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_ENDPOINT_URL = 'https://BLR1.digitaloceanspaces.com'
