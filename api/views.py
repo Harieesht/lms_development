@@ -134,7 +134,7 @@ def get_quiz_id(request,chapter_id):
     
     user_id=decoded_token.get('user_id')
     
-    chapterquizes=ChapterQuiz.objects.filter(chapter__id=chapter_id).order_by('?')
+    chapterquizes=ChapterQuiz.objects.filter(chapter__id=chapter_id,active=True).order_by('?')
     
     chapterquizid=[quiz.id for quiz in chapterquizes]
     return Response({'chapterquizid':chapterquizid},status=status.HTTP_201_CREATED)

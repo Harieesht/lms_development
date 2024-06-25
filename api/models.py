@@ -121,6 +121,7 @@ class ChapterQuiz(models.Model):
     choice_c=models.CharField(max_length=200)
     choice_d=models.CharField(max_length=200)
     correct_answer=models.CharField(max_length=1,choices=answer)
+    active=models.BooleanField(default=True)
     
 
 class StudentChapterQuizAnswer(models.Model):
