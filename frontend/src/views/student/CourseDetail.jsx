@@ -56,8 +56,8 @@ function CourseDetail() {
  
   console.log(postmessage)
  
-  const handleAddQuestionSubmit = (e) => {
-    e.preventDefault();  
+  const handleAddQuestionSubmit = (e) => {   
+    e.preventDefault();                                
     handleSaveQuestion(e);
     fetchSubjectQuestions(e);
   }

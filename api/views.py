@@ -313,10 +313,47 @@ def post_question_answers(request):
     
     return Response({'message':'post have been saved'},status=status.HTTP_201_CREATED)
     
+@api_view(['GET','POST'])
+def student_quiz_status(request,chapter_id):
+    
+    decoded_token=authenticate(request)
+    
+    if decoded_token.get('message'):
+        message=decoded_token.get('message')
+        message_status=decoded_token.get('status')
+        return Response({'message':message},status=message_status)
+    
+    user_id=decoded_token.get('user_id')
+    
+    if request.method == 'GET':
+        try:
+            studentquizattended=StudentChapterQuizAttended.objects.get(student_id=user_id,chapter_id=chapter_id)
+            is_blocked=studentquizattended.blocked
+            
+        except StudentChapterQuizAttended.DoesNotExist:
+            studentquizattendedobject=StudentChapterQuizAttended.objects.create(student_id=user_id,chapter_id=chapter_id)
+            studentquizattendedobject.save()
+            is_blocked=studentquizattendedobject.blocked
+            return Response({'is_blocked':is_blocked},status=status.HTTP_201_CREATED)
+
+        
+            
+        return Response({'is_blocked':is_blocked},status=status.HTTP_202_ACCEPTED)
+    
+    elif request.method == 'POST':
+        
+        studentquizattended=StudentChapterQuizAttended.objects.get(student_id=user_id,chapter_id=chapter_id)
+        studentquizattended.blocked=True
+        studentquizattended.save()
+        
+        return Response({'is_blocked':True},status=status.HTTP_202_ACCEPTED)
+
+
+
     
     
-        
-        
+    
+    
         
         
         

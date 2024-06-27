@@ -23,12 +23,24 @@ function Quizpage() {
   const [quizAnswers, setQuizAnswers] = useState([]);  
   const [time,setTime] = useState(30); 
   const [error,setError] = useState('');
+  const [quizLocked,setQuizLocked] = useState(false)
   const navigate = useNavigate();
   const param = useParams(); 
    
+// api to see if student quiz is locked or not
+  useEffect(() => {                                                         
+    const getStudentQuizUpdate = async() => {
+      const response = await useAxios().get(`user/subject/student_quiz_status/${param.chapterid}`)
+      setQuizLocked(response?.data?.is_blocked);
+  };
+
+  getStudentQuizUpdate();
+
+  },[]);
+
 
   useEffect(() => {
-    const getQuizIds = async () => {
+    const getQuizIds = async () => {     // api to get the quizid's 
       try {
         const response = await useAxios().get(`user/subject/chapterid/${param.chapterid}`);
         if (response) {
@@ -44,7 +56,7 @@ function Quizpage() {
   }, []);
 
   useEffect(() => {
-    if (quizid.length > 0 && index >= 0) {
+    if (quizid.length > 0 && index >= 0) {   //api to get the quiz with id present in array 
       const getQuiz = async () => {
         try {
           const response = await useAxios().get(`user/subject/quiz/${quizid[index]}`);
@@ -66,11 +78,34 @@ function Quizpage() {
     }
   }, [index, quizid]);
 
-  const handleIndex = (e) => {
+  const handleIndex = (e) => {  // increasing index when needed 
     e.preventDefault();
-    setIndex((prevIndex) => prevIndex + 1); 
-    setTime(30);   
+    setIndex((prevIndex) => prevIndex + 1);    
   }; 
+
+
+
+useEffect(() => {   /// blocking the quiz if students minimise or press other tabs
+    const lockStudentQuiz = async () => {
+      const formdataquizlock=new FormData();
+      const response = await useAxios().post(`user/subject/student_quiz_status/${param.chapterid}`,formdataquizlock);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // lockStudentQuiz(); 
+        // setQuizLocked(true); 
+      }
+    };
+  
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+    
+  }, []);
+
   
   useEffect(() =>{ 
     if (index!==quizid.length){
@@ -81,14 +116,9 @@ function Quizpage() {
         setTime(prevTime => prevTime - 1);
       }, 1000);
      }
-     else if(time === 0){ 
-      handleSubmit(); 
 
-    } 
-    else if(time === 0 && index===quizid.length-1){ 
-      handleSubmit(); 
-      setIndex(quizid.length);
-      
+     else if(time === 0){ 
+      handleFinalSubmit(); 
     } 
       return () => clearInterval(interval);
 }}, [time]);
@@ -112,7 +142,7 @@ function Quizpage() {
             selectedOption, 
             correctAnswer, 
           }; 
- 
+
   
     try {
       const response = await useAxios().post(`user/subject/quiz/evaluate/${quizid[index]}`, formData); 
@@ -123,8 +153,9 @@ function Quizpage() {
           setIndex((prevIndex) => prevIndex + 1);  
           setSelectedOption(""); 
           setError(''); 
-          setTime(30);
-        } else if (index === quizid.length - 1){ 
+          // setTime(30);
+        } 
+        else if (index === quizid.length - 1){ 
           handleFinalSubmit(); 
           setIndex(quizid.length);
         } 
@@ -134,6 +165,9 @@ function Quizpage() {
     } catch (error) {
       console.error(error);
     }  
+
+    
+    
   
   };
 
@@ -147,6 +181,7 @@ function Quizpage() {
       if (response.status === 201) {
         setIsQuizCompleted(true);
         setPercentage(response.data.progress)
+        lockStudentQuiz();
         
       } else {
         console.error('Error submitting final progress:', response);
@@ -169,7 +204,7 @@ function Quizpage() {
     setSelectedOption("");  
     setQuizAnswers([])
   }   
-
+  if (!quizLocked){
   return ( 
    <section className="section px-2 px-lg-5 py-4">
     <div className="container-fluid">
@@ -298,7 +333,15 @@ function Quizpage() {
       )}
     </div> 
   </section>
+  );}
+
+else{
+  return (
+    <>
+    <h1>quiz page is locked</h1>
+    </>
   );
+}
 }
 
 export default Quizpage;

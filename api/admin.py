@@ -5,6 +5,7 @@ from .models import *
 from users.models import User,Teacher,Student
 
 class ProgramAdmin(admin.ModelAdmin):
+    
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if request.user.user_type == 'admin':
             # Filter the queryset based on the users college(users)
@@ -63,6 +64,7 @@ class ChapterAdmin(admin.ModelAdmin):
 
 
 class ChapterItemAdmin(admin.ModelAdmin):
+    
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if request.user.user_type == 'admin':
             # Filter the queryset based on the user's college
@@ -79,7 +81,7 @@ admin.site.register(SubjectProgress)
 admin.site.register(ChapterQuiz)
 admin.site.register(StudentChapterQuizAnswer) 
 admin.site.register(StudentChapterQuizProgressPercent) 
-
+admin.site.register(StudentChapterQuizAttended)
 
 
 

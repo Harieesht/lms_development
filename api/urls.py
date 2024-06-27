@@ -3,6 +3,7 @@ from api import views as api_views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
+    
     path("user/token/",api_views.MyTokenObtainPairView.as_view()),
     path('user/token/refresh/',TokenRefreshView.as_view()),
     path('user/subject',api_views.get_subject),
@@ -17,5 +18,9 @@ urlpatterns = [
     path('user/subject/get_question/<int:subject_id>',api_views.get_questions), 
     path('user/subject/get_question_answer/<int:question_id>',api_views.get_question_answers), 
     path('user/subject/post_question_answer/',api_views.post_question_answers), 
+    path('user/subject/student_quiz_status/<int:chapter_id>',api_views.student_quiz_status),
+     
+    
+    
 ]
 

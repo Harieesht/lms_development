@@ -158,7 +158,15 @@ class StudentChapterQuizProgressPercent(models.Model):
         
         return (correct_answer_count/quiz_count)*100
         
- 
+class StudentChapterQuizAttended(models.Model):
+    student=models.ForeignKey(Student,on_delete=models.CASCADE)
+    chapter=models.ForeignKey(Chapter,on_delete=models.CASCADE)
+    attended=models.BooleanField(default=False)
+    blocked=models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.student.name}-{self.chapter.name}"
+    
 class SubjectQuestion(models.Model):
     subject=models.ForeignKey(Subject,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE) 
